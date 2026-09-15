@@ -21,13 +21,19 @@ def main():
         choice = input("Enter your choice: ")
         print("You entered:", choice)
 
-        if choice == "5":
+        if choice == "1":
+            print("Add package selected.")
+        elif choice == "2":
+            print("Update status selected.")
+        elif choice == "3":
+            print("Search package selected.")            
+        elif choice == "4":
+            print("View all packages selected.")
+        elif choice == "5":
+            print("Quitting the program.")
             running = False
-
-    choice = input("Enter your choice: ")
-    print("You entered:", choice)
-
-    if choice == input("Enter your choice: "):
-        print("You entered:", choice)
+        else:
+            print("Invalid choice. Please try again.")
+    
 
 main()

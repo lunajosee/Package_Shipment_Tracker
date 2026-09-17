@@ -8,6 +8,7 @@ Date: 2026-09-11
 
 def main():
     """Run the main menu loop for the package tracker program."""
+    packages = {}
     running = True
 
     while running:
@@ -22,18 +23,20 @@ def main():
         print("You entered:", choice)
 
         if choice == "1":
-            print("Add package selected.")
+            package_id = input("Enter package ID: ")
+            destination = input("Enter destination: ")
+            packages[package_id] = {"destination": destination, "status": "warehouse"}
+            print("Package added successfully.")
         elif choice == "2":
-            print("Update status selected.")
+            package_id = input("Update status selected")
         elif choice == "3":
-            print("Search package selected.")            
+            print("Search package selected.")           
         elif choice == "4":
             print("View all packages selected.")
         elif choice == "5":
-            print("Quitting the program.")
             running = False
         else:
-            print("Invalid choice. Please try again.")
+            print("Invalid choice, please try again.")
     
 
 main()

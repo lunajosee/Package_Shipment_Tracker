@@ -28,11 +28,15 @@ def main():
             packages[package_id] = {"destination": destination, "status": "warehouse"}
             print("Package added successfully.")
         elif choice == "2":
-            package_id = input("Update status selected")
+            print("Update status selected")
         elif choice == "3":
             print("Search package selected.")           
         elif choice == "4":
-            print("View all packages selected.")
+            if packages:
+                for package_id, details in packages.items():
+                    print(package_id, "-", details["destination"], "-", details["status"])
+            else:
+                print("No packages found.")
         elif choice == "5":
             running = False
         else:

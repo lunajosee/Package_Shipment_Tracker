@@ -32,6 +32,18 @@ def update_package_status(packages):
     else:
         print("Package ID not found.")
 
+def search_package(packages):
+    """Prompt the user for a package ID and display its details."""
+    package_id = input("Enter package ID to search: ")
+
+    if package_id in packages:
+        details = packages[package_id]
+        print("Package ID:", package_id)
+        print("Destination:", details["destination"])
+        print("Status:", details["status"])
+    else:
+        print("Package ID not found.")
+
 def main():
     """Run the main menu loop for the package tracker program."""
     packages = {}
@@ -53,7 +65,7 @@ def main():
         elif choice == "2":
             update_package_status(packages)
         elif choice == "3":
-            print("Search for package selected")
+            search_package(packages)
         elif choice == "4":
             view_packages(packages)
         elif choice == "5":
@@ -61,5 +73,4 @@ def main():
         else:
             print("Invalid choice. Please try again.")
     
-
 main()

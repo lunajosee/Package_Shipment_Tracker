@@ -1,76 +1,91 @@
 """
-Program Name: Package Shipment Tracker
+Program Name: tracker.py
 Author: Jose Luna
-Purpose: This program tracks the shipment of packages and provides updates on their status.
-Resources: None
-Date: 2026-09-11
+Purpose: Command-line menu for the Package Shipment Tracker. Handles
+         user input and output and delegates the data work to
+         PackageTracker and the storage module.
+Resources: Refactored from the Project 1 tracker.py
+Date: 10/30/26
 """
-def add_package(packages):
-    """Prompt the user for package details and add it to the packages dictionary."""
-    package_id = input("Enter package ID: ")
-    destination = input("Enter destination: ")
-    packages[package_id] = {"destination": destination, "status": "warehouse"}
-    print("Package added successfully.")
+from package_tracker import PackageTracker
+from storage import load_packages, save_packages
 
-def view_packages(packages):
-        """Print all packages and their details."""
-        if packages:
-            for package_id, details in packages.items():
-                print(package_id, "-", details["destination"], "-", details["status"])
-        else:
-            print("No packages found.")
 
-def update_package_status(packages):
-    """Prompt the user for a package ID and update its status."""
-    package_id = input("Enter package ID to update: ")
-
-    if package_id in packages:
-        print("Current status:", packages[package_id]["status"])
-        new_status = input("Enter new status: ")
-        packages[package_id]["status"] = new_status
-        print("Package status updated successfully.")
+def handle_add(tracker):
+    """Ask for package details and add the package to the tracker."""
+    package_id = input("Enter package ID: ").strip()
+    destination = input("Enter destination: ").strip()
+    if tracker.add_package(package_id, destination):
+        print("Package added successfully.")
     else:
+        print("That package ID already exists.")
+
+
+def handle_update(tracker):
+    """Ask which package to update and change its status."""
+    package_id = input("Enter package ID to update: ").strip()
+    package = tracker.search_package(package_id)
+    if package is None:
         print("Package ID not found.")
+        return
+    print("Current status:", package.status)
+    new_status = input("Enter new status (warehouse/in transit/delivered): ").strip()
+    tracker.update_status(package_id, new_status)
+    print("Status updated successfully.")
 
-def search_package(packages):
-    """Prompt the user for a package ID and display its details."""
-    package_id = input("Enter package ID to search: ")
 
-    if package_id in packages:
-        details = packages[package_id]
-        print("Package ID:", package_id)
-        print("Destination:", details["destination"])
-        print("Status:", details["status"])
+def handle_search(tracker):
+    """Ask for a package ID and display that package's details."""
+    package_id = input("Enter package ID to search: ").strip()
+    package = tracker.search_package(package_id)
+    if package is None:
+        print("Package ID not found.")
     else:
-        print("Package ID not found.")
+        print("Package ID:", package.package_id)
+        print("Destination:", package.destination)
+        print("Status:", package.status)
+
+
+def handle_view(tracker):
+    """Display every package currently being tracked."""
+    packages = tracker.list_packages()
+    if not packages:
+        print("No packages found.")
+        return
+    for package in packages:
+        print(package.package_id, "-", package.destination, "-", package.status)
+
 
 def main():
-    """Run the main menu loop for the package tracker program."""
-    packages = {}
+    """Load saved packages and run the menu loop until the user quits."""
+    tracker = load_packages()
     running = True
 
     while running:
-        print("Package Shipment Tracker")
+        print("\nPackage Shipment Tracker")
         print("1. Add package")
         print("2. Update package status")
         print("3. Search for package")
         print("4. View all packages")
         print("5. Quit")
 
-        choice = input("Enter your choice: ")
-        print("You entered:", choice)
+        choice = input("Enter your choice: ").strip()
 
         if choice == "1":
-            add_package(packages)
+            handle_add(tracker)
+            save_packages(tracker)
         elif choice == "2":
-            update_package_status(packages)
+            handle_update(tracker)
+            save_packages(tracker)
         elif choice == "3":
-            search_package(packages)
+            handle_search(tracker)
         elif choice == "4":
-            view_packages(packages)
+            handle_view(tracker)
         elif choice == "5":
             running = False
         else:
-            print("Invalid choice. Please try again.")
-    
-main()
+            print("Invalid choice, please try again.")
+
+
+if __name__ == "__main__":
+    main()

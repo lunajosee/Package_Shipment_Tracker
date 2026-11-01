@@ -1,15 +1,26 @@
-https://youtu.be/t4IR0Josfvs
+[Project 2 video link coming soon]
 
 # Package Shipment Tracker
 
-A command-line Python program that simulates tracking a set of packages through their shipment lifecycle — adding new packages, updating their status, searching by ID, and viewing everything currently tracked.
+A command-line Python program for tracking packages through a shipment lifecycle. Project 2 refactors my Project 1 tracker into separate modules and classes, adds JSON data persistence, and adds automated tests with pytest.
 
 ## Features
 
-- **Add a package** — store a new package with a destination and starting status ("warehouse")
-- **Update package status** — move a package through its lifecycle (e.g. warehouse → in transit → delivered)
-- **Search for a package** — look up a specific package by ID and view its details
-- **View all packages** — list every tracked package and its current status
+- Add a package with a destination (duplicate IDs are rejected)
+- Update a package's status (warehouse, in transit, delivered)
+- Search for a package by ID
+- View all packages
+- Packages are saved to `packages.json` and reloaded the next time the program runs
+
+## Project structure
+
+| File | Purpose |
+|---|---|
+| `package.py` | `Package` class: one shipment's ID, destination, and status |
+| `package_tracker.py` | `PackageTracker` class: manages the collection of packages |
+| `storage.py` | Saves and loads packages as JSON, with error handling |
+| `tracker.py` | Menu loop that handles user input and output |
+| `tests/` | pytest unit tests for each module |
 
 ## How to run
 
@@ -17,19 +28,28 @@ A command-line Python program that simulates tracking a set of packages through 
 python tracker.py
 ```
 
-Follow the on-screen menu to add, update, search, or view packages, or quit the program.
+## How to run the tests
+
+```
+python -m pip install -r requirements.txt
+python -m pytest
+```
 
 ## Design notes
 
-This project uses a **dictionary** (`packages`) as its main data structure, keyed by package ID. A dictionary was chosen over a list because the program's core operations — searching for a specific package and updating its status — require fast lookup by ID rather than scanning through items in order. Each package's details (destination, status) are stored as a nested dictionary under its ID.
+- **Composition over inheritance.** `PackageTracker` holds `Package` objects but is not a kind of package, so inheritance would not model the problem. A flat class structure keeps the code simple.
+- **Dictionary for the collection.** Packages are stored in a dictionary keyed by ID because the main operations (search and update) look packages up by ID.
+- **Separation of concerns.** The classes only manage data. `tracker.py` is the only file that calls `input()` and `print()`, which keeps the logic testable.
+- **JSON persistence with error handling.** `storage.py` uses `try/except` so a missing or corrupted data file starts the program with no packages instead of crashing.
 
-A tuple wasn't used because none of the program's data is fixed — packages are added, and their status changes over time, so a mutable structure (dictionary) fits better than an immutable one.
+## Chapter 8-11 concepts demonstrated
 
-## Concepts demonstrated
+- **Functions and modules:** separate modules, default arguments, return values
+- **Classes:** `Package` and `PackageTracker`, with attributes and methods
+- **File I/O and exceptions:** reading and writing a file with `try/except`
+- **Data persistence:** the `json` module
+- **Testing:** 12 pytest unit tests
 
-- Variables & simple data types (strings, booleans)
-- Collections (dictionary, including nested dictionaries)
-- Control flow (if/elif/else)
-- Iteration (while loop for the menu, for loop to display packages)
-- User interaction (input/print)
-- Functions (each feature is its own function: `add_package`, `view_packages`, `update_package_status`, `search_package`)
+## Project 1 video
+
+The original Project 1 version of this tracker: https://youtu.be/t4IR0Josfvs

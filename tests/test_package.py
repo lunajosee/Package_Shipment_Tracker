@@ -13,11 +13,13 @@ def test_status_defaults_to_warehouse():
     package = Package("PKG1", "Denver")
     assert package.status == "warehouse"
 
+
 def test_package_stores_id_and_destination():
     """A package should keep the ID and destination it was created with."""
     package = Package("PKG1", "Denver")
     assert package.package_id == "PKG1"
     assert package.destination == "Denver"
+
 
 def test_to_dict_returns_all_fields():
     """to_dict should return the package's data as a dictionary."""
@@ -26,4 +28,4 @@ def test_to_dict_returns_all_fields():
         "package_id": "PKG1",
         "destination": "Denver",
         "status": "in transit"
-        }
+    }

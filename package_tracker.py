@@ -7,11 +7,12 @@ Date: 10/27/26
 """
 from package import Package
 
+
 class PackageTracker:
     """Manages a collection of packages."""
 
     def __init__(self):
-        """Create a tracker that starts with no packages"""
+        """Create a tracker that starts with no packages."""
         self.packages = {}
 
     def add_package(self, package_id, destination):
@@ -22,7 +23,7 @@ class PackageTracker:
         return True
 
     def search_package(self, package_id):
-        """Return the Package with the given ID, or None if it isn't found"""
+        """Return the Package with the given ID, or None if it isn't found."""
         return self.packages.get(package_id)
 
     def update_status(self, package_id, new_status):

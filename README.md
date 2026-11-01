@@ -20,7 +20,7 @@ A command-line Python program for tracking packages through a shipment lifecycle
 | `package_tracker.py` | `PackageTracker` class: manages the collection of packages |
 | `storage.py` | Saves and loads packages as JSON, with error handling |
 | `tracker.py` | Menu loop that handles user input and output |
-| `tests/` | pytest unit tests for each module |
+| `tests/` | pytest unit tests for `Package`, `PackageTracker`, and `storage` |
 
 ## How to run
 
